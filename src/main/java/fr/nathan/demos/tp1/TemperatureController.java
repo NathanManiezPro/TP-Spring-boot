@@ -1,9 +1,8 @@
 package fr.nathan.demos.tp1;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/temperature")
 public class TemperatureController {
 
     private final TemperatureService temperatureService;
@@ -12,10 +11,14 @@ public class TemperatureController {
         this.temperatureService = temperatureService;
     }
 
-    @GetMapping("/temperature")
-    public Temperature getTemperature() {
-        return temperatureService.getTemperatures();
+
+    @GetMapping
+    public Temperature getTemperature(@RequestParam (defaultValue = "0")double celsius) {
+        return temperatureService.getTemperatures(celsius);
     }
-    @PostMapping("/temperature/convert")
-    public
+   @PostMapping("/convert")
+   public Temperature convertTemperature(@RequestBody TemperatureConvertDto convert){
+        return temperatureService.getTemperatures(convert.getUnit,
+                convert.getValue)
+   }
 }
